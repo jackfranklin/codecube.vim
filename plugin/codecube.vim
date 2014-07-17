@@ -1,3 +1,5 @@
+source parsejson.vim
+
 function! CC_GetVisualSelection()
   let [lnum1, col1] = getpos("'<")[1:2]
   let [lnum2, col2] = getpos("'>")[1:2]
