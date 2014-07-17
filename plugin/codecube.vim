@@ -12,7 +12,6 @@ function! CC_GetVisualSelection()
 endfunction
 
 function! CCApiRequest(raw)
-  "TODO: extend this with all the langs that codecube has support for
   let commentTypes = {
         \ "javascript": '//',
         \ "ruby": '#',
