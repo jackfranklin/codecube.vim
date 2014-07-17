@@ -1,3 +1,7 @@
+function! StripWhitespace(input_string)
+  return substitute(a:input_string, '^\s*\(.\{-}\)\s*$', '\1', '')
+endfunction
+
 function! CC_GetVisualSelection()
   let [lnum1, col1] = getpos("'<")[1:2]
   let [lnum2, col2] = getpos("'>")[1:2]
@@ -12,7 +16,8 @@ function! CCApiRequest(raw)
   let commentTypes = { "javascript": '//', "ruby": '#' }
   let apiKey = "CQhsSuOZIqkFBuuEVcPcDD18xdSJbz1b"
   let url = "http://api.codecube.io/sync-run/"
-  let escapedCode = substitute(a:raw, '"', '\\\"', 'g')
+
+  let escapedCode = substitute(StripWhitespace(a:raw), '"', '\\\"', 'g')
   let textFiletype = &filetype
   let command = "curl -H 'Authorization: ".apiKey."' -d '{\"language\": \"".textFiletype."\", \"code\": \"".escapedCode."\"}' ".url
   let result = system(command)
@@ -30,10 +35,10 @@ function! CCApiRequest(raw)
 endfunction
 
 function! CodeCube_EntireFile()
-  CCApiRequest(join(getline(1,'$'), '\n'));
+  call CCApiRequest(join(getline(1,'$'), '\n'))
 endfunction
 
 function! CodeCube_VisualSelection() range
-  CCApiRequest(CC_GetVisualSelection())
+  call CCApiRequest(CC_GetVisualSelection())
 endfunction
 
