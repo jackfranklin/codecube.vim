@@ -13,7 +13,18 @@ endfunction
 
 function! CCApiRequest(raw)
   "TODO: extend this with all the langs that codecube has support for
-  let commentTypes = { "javascript": '//', "ruby": '#' }
+  let commentTypes = {
+        \ "javascript": '//',
+        \ "ruby": '#',
+        \ "c": '//',
+        \ "cpp": '//',
+        \ "cs": '#',
+        \ "clojure": ';',
+        \ "perl": '#',
+        \ "python": '#',
+        \ "go": '//',
+        \ "java": '//',
+        \}
   let apiKey = "CQhsSuOZIqkFBuuEVcPcDD18xdSJbz1b"
   let url = "http://api.codecube.io/sync-run/"
 
@@ -27,9 +38,10 @@ function! CCApiRequest(raw)
   let parsed = ParseJSON(codeCubeResult)
   let outputs = parsed.output
   let i = 0
+  exec "normal! Go\<CR>"
   while i < len(outputs)
     let output = outputs[i]["body"]
-    exec "normal! Go\<CR>".commentTypes[textFiletype]."CodeCube stdout: ".output."\<ESC>"
+    exec "normal! Go".commentTypes[textFiletype]."CodeCube stdout: ".output."\<ESC>"
     let i += 1
   endwhile
 endfunction
